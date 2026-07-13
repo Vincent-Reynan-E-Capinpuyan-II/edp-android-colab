@@ -9,7 +9,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -44,7 +43,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.capinpuyan.ui.theme.CapinpuyanTheme
 
-// Stretch Goal: Extract colors and sizes into named constants
 object Brand {
     val PrimaryColor = Color(0xFF771C1B)
     val BackgroundColor = Color(0xFFF4F2F1)
@@ -70,8 +68,6 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun BusinessCard(modifier: Modifier = Modifier) {
-    // Step 2 — Add the outer layout
-    // Use theme-aware background for true dark mode support
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -80,11 +76,9 @@ fun BusinessCard(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center
     ) {
 
-        // Stretch Goal: Wrap the card content in a Material Card with elevation
         Card(
             modifier = Modifier.padding(16.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-            // Use surface color for the card container
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
             Column(
@@ -93,7 +87,6 @@ fun BusinessCard(modifier: Modifier = Modifier) {
                 verticalArrangement = Arrangement.Center
             ) {
 
-                // Step 3 — Build the circular avatar
                 Image(
                     painter = painterResource(R.drawable.profile),
                     contentDescription = "Profile photo",
@@ -101,7 +94,7 @@ fun BusinessCard(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .size(Brand.AvatarSize)
                         .clip(CircleShape)
-                        // Use primary from theme or brand color for border
+
                         .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
                 )
 
@@ -117,11 +110,9 @@ fun BusinessCard(modifier: Modifier = Modifier) {
                 Text(
                     text = "Software Engineer",
                     fontSize = 16.sp,
-                    // Use onSurfaceVariant for secondary text
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
-                // Step 5 — Build reusable contact rows
                 Spacer(Modifier.height(24.dp))
                 ContactRow(
                     icon = Icons.Default.Phone,
@@ -158,7 +149,6 @@ fun ContactRow(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            // Use primary color from theme for icons
             tint = MaterialTheme.colorScheme.primary
         )
         Spacer(Modifier.width(8.dp))
@@ -185,7 +175,6 @@ fun BusinessCardPreview() {
 )
 @Composable
 fun BusinessCardDarkPreview() {
-    // Force darkTheme = true for this preview
     CapinpuyanTheme(darkTheme = true) {
         BusinessCard()
     }
