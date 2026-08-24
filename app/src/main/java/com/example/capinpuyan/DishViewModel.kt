@@ -83,7 +83,7 @@ class DishViewModel : ViewModel() {
     }
 
     // DELETE -- TODO 5  (5 pts)
-    // Remove the recipe whose id == recipeId from the dish whose id == dishId.
+    // Remove the recipe whose id == recipeId from the dish whose id == dishId
     fun deleteRecipe(dishId: Int, recipeId: Int) {
         _dishes.value = _dishes.value.map { dish ->
             if (dish.id == dishId) {
