@@ -4,13 +4,22 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.capinpuyan.ui.AppViewModelFactory
+import com.example.capinpuyan.ui.PostsScreen
+import com.example.capinpuyan.ui.PostsViewModel
+import com.example.capinpuyan.ui.ProfileScreen
+import com.example.capinpuyan.ui.ThemeViewModel
 import com.example.capinpuyan.ui.theme.CapinpuyanTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,30 +27,40 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            CapinpuyanTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+            val factory = AppViewModelFactory(applicationContext)
+            val postsVm: PostsViewModel = viewModel(factory = factory)
+            val themeVm: ThemeViewModel = viewModel(factory = factory)
+
+            val darkTheme by themeVm.isDarkTheme.collectAsStateWithLifecycle()
+
+            CapinpuyanTheme(darkTheme = darkTheme, dynamicColor = false) {
+                MySocialApp(postsVm, themeVm)
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CapinpuyanTheme {
-        Greeting("Android")
+fun MySocialApp(postsVm: PostsViewModel, themeVm: ThemeViewModel) {
+    var tab by rememberSaveable { mutableIntStateOf(0) }
+    Scaffold(
+        bottomBar = {
+            NavigationBar {
+                NavigationBarItem(
+                    selected = tab == 0, onClick = { tab = 0 },
+                    icon = { Icon(Icons.Default.Home, null) },
+                    label = { Text("Posts") },
+                )
+                NavigationBarItem(
+                    selected = tab == 1, onClick = { tab = 1 },
+                    icon = { Icon(Icons.Default.Person, null) },
+                    label = { Text("Profile") },
+                )
+            }
+        }
+    ) { padding ->
+        Box(Modifier.padding(padding)) {
+            if (tab == 0) PostsScreen(postsVm) else ProfileScreen(postsVm, themeVm)
+        }
     }
 }
