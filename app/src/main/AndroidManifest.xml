@@ -2,6 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- TODO 1a: uses-permission CAMERA (runtime) -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- TODO 1b: uses-permission ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- TODO 1c: uses-permission VIBRATE (normal, used by the bonus) -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- TODO 1d: uses-feature android.hardware.camera with required="false" -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,10 +26,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Capinpuyan">
+
+        <!-- LiceoFieldKit (Lab Activity 12). The namespace of this module is
+             com.example.capinpuyan, so ".MainActivity" would resolve to the old
+             app's activity. LiceoFieldKit's activity must be named in full. -->
         <activity
-            android:name=".MainActivity"
+            android:name="edu.liceo.fieldkit.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
+            android:label="@string/app_name_fieldkit"
             android:theme="@style/Theme.Capinpuyan"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -22,6 +41,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Capinpuyan"
+            android:windowSoftInputMode="adjustResize">
+            <!-- Kept from the Lab Activity 11 app. Its MAIN/LAUNCHER filter was
+                 removed so the launcher shows a single icon (LiceoFieldKit). -->
         </activity>
     </application>
 
