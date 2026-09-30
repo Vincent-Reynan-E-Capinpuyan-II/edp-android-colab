@@ -13,7 +13,7 @@ image). Nothing here is mock-ups or redraws.
 | `05-level.png` | 1080x2400 | Level card reading `x = 0.00  y = 0.00  z = 9.81` and **LEVEL ✓** — see the caveat below |
 | `06-location.png` | 1080x2400 | `8.48220, 125.68900 (±5 m)` and `Location access: Precise` |
 | `07-branch.png` | 996x576 | Terminal showing `git branch` → `* lab-activity-11`, with the last commit |
-| `08-shake-capture.png` | 1226x918 | **Bonus.** Emulator window showing the new thumbnail, beside a Logcat window with the `Shake capture` line |
+| `08-shake-capture.png` | 1398x1032 | **Bonus.** The app (showing the new thumbnail) beside a Logcat window with the `Shake capture` lines |
 
 `09-torch.png` is optional and needs a real phone — see the bonus note at the
 bottom.
@@ -42,6 +42,21 @@ so the same technique works.
 
 ## How the other shots were produced
 
+`08-shake-capture.png` is a side-by-side composite of two genuine captures: the
+emulator window, and a terminal window showing the Logcat buffer. It is
+composited rather than grabbed as one desktop screenshot because other windows
+(Android Studio, a browser) kept covering the emulator mid-capture.
+
+The shake was produced through the emulator's virtual accelerometer, and 71
+`Shake capture` events were logged in total:
+
+    adb emu sensor set acceleration 0:0:25   # |25 - 9.81| = 15.19 > 12  -> shake
+
+The Logcat pane shows `adb logcat -d -s FieldKit` (dumped, not live-tailed) so
+the frame stays stable. The last six events are spaced 1510–1536 ms apart,
+which shows the 1500 ms cool-down in TODO 13b gating repeat captures, and the
+thumbnail advances to a new filename (`shot_….jpg`) each time.
+
 Location for `06-location.png` was set to Cagayan de Oro (note `geo fix` takes
 **longitude first**):
 
@@ -69,7 +84,7 @@ Every TODO was exercised on the device, not just compiled:
 - **5, 6** — live `x/y/z` readout; flat → `LEVEL ✓`, tilted → `Tilted, adjust`.
 - **7, 8, 9** — 189 KB JPEG written to cache, thumbnail rendered from it.
 - **10, 11, 12** — fused fix resolved to `8.48220, 125.68900` at `±5 m`.
-- **13** — `Shake capture` logged three times, spaced 1510 ms and 1536 ms apart,
+- **13** — `Shake capture` logged 71 times, spaced 1510 ms and 1536 ms apart,
   which shows the 1500 ms cool-down actually gating repeats; the thumbnail
   advanced to a new filename.
 - **14** — torch correctly stays hidden: the emulator has no flash unit.
